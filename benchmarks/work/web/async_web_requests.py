@@ -1,6 +1,6 @@
 from functools import partial
 
-import aiohttp
+import requests
 import asyncio
 
 from async_runners.AsyncPool import AsyncPool
@@ -16,19 +16,15 @@ URL_LIST = ['https://facebook.com',
 
 
 async def get_website(session, url):
-    async with session.get(url) as resp:
-        await resp.read()
-    return True
+    return session.get(url)
 
 
 async def run(work_size, job_count, worker_count):
     pool = AsyncPool(worker_count)
     pool.start()
-
-    async with aiohttp.ClientSession() as session:
-        work = [URL_LIST[i % 8] for i in range(job_count)]
-        result = await pool.map(partial(get_website, session), work)
-    await asyncio.sleep(0.005)
+    work = [URL_LIST[i % 8] for i in range(job_count)]
+    session = requests.session()
+    result = await pool.map(partial(get_website, session), work)
     pool.stop()
     await pool.join()
 
