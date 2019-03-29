@@ -22,10 +22,9 @@ funcs = [
 ]
 
 for func, name in funcs:
-    print(name)
     result = benchmarker.benchmark(
         func,
-        25,
+        23,
         [1, 100, 300],
         [1, 4, 100, 1000])
     result = result.pivot(
