@@ -1,6 +1,5 @@
 import asyncio
-import time
-
+from timeit import timeit
 
 async def sleep_print_num(sleep, i):
     await asyncio.sleep(sleep)
@@ -9,12 +8,10 @@ async def sleep_print_num(sleep, i):
 
 async def print_loop():
     tasks = []
-    for i in range(10):
-        print('loop')
-        # await asyncio.sleep(0.5)
-        time.sleep(0.5)
-        tasks.append(asyncio.create_task(sleep_print_num(1, i)))
+    task1 = asyncio.create_task(sleep_print_num(0.55, 1))
+    task2 = asyncio.create_task(sleep_print_num(0.5, 2))
 
-    await asyncio.gather(*tasks)
+    await task1
+    await task2
 
-asyncio.run(print_loop())
+print(timeit(lambda: asyncio.run(print_loop()), number=1))

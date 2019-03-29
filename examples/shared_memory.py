@@ -3,18 +3,12 @@ from multiprocessing import Value, Process
 from multiprocessing.pool import Pool
 import asyncio
 
-
-def increment_process():
-    for i in range(10000):
-        shared_count_process.value += 1
-
-
 class SharedMemory:
     def __init__(self):
         self.shared_count = 0
         self.shared_count_process = Value('i', 0, lock=False)
 
-    def increment(self):
+    def increment_thread(self):
         self.shared_count += 1
 
     def increment_process(self):
@@ -27,8 +21,8 @@ class SharedMemory:
     def threads(self):
         self.shared_count = 0
         with ThreadPoolExecutor(max_workers=1000) as executor:
-            for _ in range(200000):
-                executor.submit(self.increment)
+            for _ in range(200_000):
+                executor.submit(self.increment_thread)
         print(self.shared_count)
 
     def processes(self):
@@ -44,9 +38,8 @@ class SharedMemory:
 
     def coroutines(self):
         self.shared_count = 0
-
         async def loop():
-            await asyncio.gather(*[self.increment_coroutine() for _ in range(200000)])
+            await asyncio.gather(*[self.increment_coroutine() for _ in range(200_000)])
         asyncio.run(loop())
         print(self.shared_count)
 
