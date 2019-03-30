@@ -22,10 +22,11 @@ funcs = [
 ]
 
 for func, name in funcs:
+    print(name)
     result = benchmarker.benchmark(
         func,
         23,
-        [1, 100, 300],
+        [1, 50, 100],
         [1, 4, 100, 1000])
     result = result.pivot(
         index='job_count', columns='worker_count', values='execution_time')

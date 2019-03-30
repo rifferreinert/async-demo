@@ -33,7 +33,7 @@ for func, name in funcs:
         func,
         13,
         [1, 10, 50],
-        [1, 3, 10, 30, 50, 100])
+        [1, 4, 10, 30, 50, 100, 1000])
     result = result.pivot(
         index='job_count', columns='worker_count', values='execution_time')
     result.to_csv(f'data/{name}.csv')
