@@ -32,7 +32,7 @@ for func, name in funcs:
     result = benchmarker.benchmark(
         func,
         13,
-        [1, 10, 50],
+        [1, 50, 200, 1000],
         [1, 4, 10, 30, 50, 100, 1000])
     result = result.pivot(
         index='job_count', columns='worker_count', values='execution_time')
