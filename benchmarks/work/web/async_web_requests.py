@@ -2,6 +2,7 @@ from functools import partial
 
 import requests
 import asyncio
+import os
 
 from async_runners.AsyncPool import AsyncPool
 
@@ -23,6 +24,9 @@ async def run(work_size, job_count, worker_count):
     pool = AsyncPool(worker_count)
     pool.start()
     work = [URL_LIST[i % 8] for i in range(job_count)]
+    work = [os.getenv('slowurl') for i in range(job_count)]
+
+
     session = requests.session()
     result = await pool.map(partial(get_website, session), work)
     pool.stop()

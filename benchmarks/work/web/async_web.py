@@ -2,6 +2,8 @@ from functools import partial
 
 import aiohttp
 import asyncio
+import os
+
 
 from async_runners.AsyncPool import AsyncPool
 
@@ -27,6 +29,7 @@ async def run(work_size, job_count, worker_count):
 
     async with aiohttp.ClientSession() as session:
         work = [URL_LIST[i % 8] for i in range(job_count)]
+        work = [os.getenv('slowurl') for i in range(job_count)]
         result = await pool.map(partial(get_website, session), work)
     await asyncio.sleep(0.005)
     pool.stop()
