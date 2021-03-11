@@ -19,20 +19,22 @@ def run_two():
 # print(timeit(run_two, number=1))
 
 
-URL_LIST = ['https://facebook.com',
-            'https://github.com',
-            'https://google.com',
-            'https://microsoft.com',
-            'https://yahoo.com',
-            'https://bing.com',
-            'https://apple.com',
-            'https://tesla.com']
+URL_LIST = [
+    "https://facebook.com",
+    "https://github.com",
+    "https://google.com",
+    "https://microsoft.com",
+    "https://yahoo.com",
+    "https://bing.com",
+    "https://apple.com",
+    "https://tesla.com",
+]
 
 
 def download(threads):
     with ThreadPoolExecutor(max_workers=threads) as executor:
         sites = executor.map(requests.get, URL_LIST)
-        print([site.status_code for site in sites])
+
 
 print(timeit(lambda: list(map(requests.get, URL_LIST)), number=1))
 print(timeit(lambda: download(1), number=1))
